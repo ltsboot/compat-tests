@@ -1,0 +1,17 @@
+// Compares versions with Gradle's real comparator (the one used by conflict resolution).
+// Note: internal API, used only to print the ordering; the conflict-gradle project proves it with real resolution.
+import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.strategy.DefaultVersionComparator
+import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.strategy.VersionParser
+
+tasks.register('order') {
+	def pairs = file('/work/pairs.txt')
+	doLast {
+		def cmp = new DefaultVersionComparator().asVersionComparator()
+		def parser = new VersionParser()
+		pairs.readLines().findAll { it.trim() && !it.startsWith('#') }.each { line ->
+			def p = line.trim().split(/\s+/)
+			int c = cmp.compare(parser.transform(p[0]), parser.transform(p[1]))
+			println "RESULT ${p[0]} ${c > 0 ? '>' : c < 0 ? '<' : '='} ${p[1]}"
+		}
+	}
+}

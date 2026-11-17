@@ -1,0 +1,58 @@
+== 0. fake repository (file://)
+  repo/ ready
+== 1. pure ordering
+pair                               | Maven  | Gradle | required
+2.7.18.1 ? 2.7.18                  | >      | >      | >
+  PASS  maven:  2.7.18.1 > 2.7.18 (= >)
+  PASS  gradle: 2.7.18.1 > 2.7.18 (= >)
+2.7.18.10 ? 2.7.18.2               | >      | >      | >
+  PASS  maven:  2.7.18.10 > 2.7.18.2 (= >)
+  PASS  gradle: 2.7.18.10 > 2.7.18.2 (= >)
+5.3.39.1 ? 5.3.39                  | >      | >      | >
+  PASS  maven:  5.3.39.1 > 5.3.39 (= >)
+  PASS  gradle: 5.3.39.1 > 5.3.39 (= >)
+5.7.14.1 ? 5.7.14                  | >      | >      | >
+  PASS  maven:  5.7.14.1 > 5.7.14 (= >)
+  PASS  gradle: 5.7.14.1 > 5.7.14 (= >)
+2.7.18.2 ? 2.7.18.1                | >      | >      | >
+  PASS  maven:  2.7.18.2 > 2.7.18.1 (= >)
+  PASS  gradle: 2.7.18.2 > 2.7.18.1 (= >)
+2.7.18.1-SNAPSHOT ? 2.7.18         | >      | >      | >
+  PASS  maven:  2.7.18.1-SNAPSHOT > 2.7.18 (= >)
+  PASS  gradle: 2.7.18.1-SNAPSHOT > 2.7.18 (= >)
+2.7.18.1-SNAPSHOT ? 2.7.18.1       | <      | <      | <
+  PASS  maven:  2.7.18.1-SNAPSHOT < 2.7.18.1 (= <)
+  PASS  gradle: 2.7.18.1-SNAPSHOT < 2.7.18.1 (= <)
+2.7.18.1 ? 2.7.19                  | <      | <      | <
+  PASS  maven:  2.7.18.1 < 2.7.19 (= <)
+  PASS  gradle: 2.7.18.1 < 2.7.19 (= <)
+2.7.18.10 ? 2.7.19                 | <      | <      | <
+  PASS  maven:  2.7.18.10 < 2.7.19 (= <)
+  PASS  gradle: 2.7.18.10 < 2.7.19 (= <)
+2.7.19 ? 2.7.18.1                  | >      | >      | >
+  PASS  maven:  2.7.19 > 2.7.18.1 (= >)
+  PASS  gradle: 2.7.19 > 2.7.18.1 (= >)
+5.3.39.1 ? 5.3.40                  | <      | <      | <
+  PASS  maven:  5.3.39.1 < 5.3.40 (= <)
+  PASS  gradle: 5.3.39.1 < 5.3.40 (= <)
+2.7.18-lts ? 2.7.18                | >      | <      | -
+2.7.18-lts ? 2.7.18.1              | <      | <      | -
+2.7.18-lts ? 2.7.19                | <      | <      | -
+2.7.18.1-lts ? 2.7.18.1            | >      | <      | -
+2.7.18-lts ? 2.7.17                | >      | >      | -
+== 2a. Maven conflict resolution (nearest-wins; BOM import)
+  PASS  maven   a,b  (a declared first)  -> nearest-wins keeps first (= 2.7.18)
+  PASS  maven   b,a  (b declared first)  -> declaration order decides (= 2.7.18.1)
+  PASS  maven   a only (no BOM) (= 2.7.18)
+  PASS  maven   BOM 2.7.18.1 + a,b (= 2.7.18.1)
+  PASS  maven   BOM 2.7.18.1 + b,a (= 2.7.18.1)
+  PASS  maven   BOM 2.7.18.1 + a only (BOM forces up) (= 2.7.18.1)
+== 2b. Gradle conflict resolution (highest version wins; platform())
+  PASS  gradle  a,b  (no platform) -> highest wins (= 2.7.18.1)
+  PASS  gradle  b,a  (no platform) -> highest wins, order irrelevant (= 2.7.18.1)
+  PASS  gradle  a only (no platform) (= 2.7.18)
+  PASS  gradle  platform(BOM 2.7.18.1) + a,b (= 2.7.18.1)
+  PASS  gradle  platform(BOM 2.7.18.1) + b,a (= 2.7.18.1)
+  PASS  gradle  platform(BOM 2.7.18.1) + a only (platform forces up) (= 2.7.18.1)
+
+== SUMMARY: 34 passed, 0 failed

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.example.consumer</groupId><artifactId>app-a-only</artifactId><version>1.0</version>
+  <repositories><repository><id>fake</id><url>file:///work/repo</url>
+    <releases><updatePolicy>never</updatePolicy></releases></repository></repositories>
+  <dependencies>
+    <dependency><groupId>org.example</groupId><artifactId>a</artifactId><version>1.0</version></dependency>
+  </dependencies>
+</project>

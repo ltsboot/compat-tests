@@ -1,0 +1,28 @@
+// Real conflict resolution in Gradle against the fake file:// repository.
+plugins { id 'java-library' }
+
+repositories { maven { url 'file:///work/repo' } }
+
+def bom = 'org.example:lib-bom:2.7.18.1'
+def scenarios = [
+	abPlain       : ['org.example:a:1.0', 'org.example:b:1.0'],
+	baPlain       : ['org.example:b:1.0', 'org.example:a:1.0'],
+	aOnlyPlain    : ['org.example:a:1.0'],
+	abPlatform    : [bom, 'org.example:a:1.0', 'org.example:b:1.0'],
+	baPlatform    : [bom, 'org.example:b:1.0', 'org.example:a:1.0'],
+	aOnlyPlatform : [bom, 'org.example:a:1.0'],
+]
+scenarios.each { name, deps ->
+	configurations.create(name) { canBeConsumed = false; canBeResolved = true }
+	deps.each { d -> dependencies.add(name, d == bom ? dependencies.platform(d) : d) }
+}
+
+tasks.register('resolveAll') {
+	doLast {
+		scenarios.keySet().each { n ->
+			def libs = configurations.getByName(n).incoming.resolutionResult.allComponents
+					.collect { it.moduleVersion }.findAll { it.name == 'lib' }.collect { it.version }
+			println "RESULT gradle ${n} lib=${libs.join(',')}"
+		}
+	}
+}
