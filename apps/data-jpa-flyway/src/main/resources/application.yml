@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: data-jpa-flyway
+  jpa:
+    open-in-view: false
+    hibernate:
+      # Flyway owns the schema; Hibernate only verifies the mapping against it.
+      ddl-auto: validate

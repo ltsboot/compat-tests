@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: web-mvc-actuator
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: web-mvc-actuator
+    description: Compatibility sample for REST, validation and Actuator

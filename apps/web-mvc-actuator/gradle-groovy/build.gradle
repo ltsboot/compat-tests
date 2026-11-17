@@ -1,0 +1,54 @@
+plugins {
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'java'
+}
+
+// Sources are shared with the Maven build and live one level up in ../src.
+group = 'io.github.ltsboot.lts.compat'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:${bootVersion}"
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['../src/main/java']
+        }
+        resources {
+            srcDirs = ['../src/main/resources']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['../src/test/java']
+        }
+        resources {
+            srcDirs = ['../src/test/resources']
+        }
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

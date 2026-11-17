@@ -1,0 +1,8 @@
+// Settings for the Groovy DSL build. The Spring Boot plugin version comes from gradle.properties.
+pluginManagement {
+    plugins {
+        id 'org.springframework.boot' version providers.gradleProperty('bootVersion').get()
+    }
+}
+
+rootProject.name = 'data-jpa-flyway'

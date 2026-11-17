@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: security
+
+# Sample-only signing key for the HS256 resource server (must be at least 256 bits).
+app:
+  jwt:
+    secret: compat-tests-only-hs256-signing-key-0123456789

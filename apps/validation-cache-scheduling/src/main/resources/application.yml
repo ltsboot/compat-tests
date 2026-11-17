@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: validation-cache-scheduling
+  cache:
+    type: caffeine
+    cache-names: prices
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=10m
+
+app:
+  refresh:
+    # Long defaults keep the scheduler quiet; RefreshJobTests shortens them.
+    initial-delay-ms: 60000
+    delay-ms: 60000
